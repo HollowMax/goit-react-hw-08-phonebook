@@ -1,9 +1,8 @@
 import { Component } from 'react';
-import { ContactsField } from './phonebookFields/ContactsField';
+import { ContactsField } from './ContactsField/ContactsField';
 import { ContactsList } from './ContactsList/ContactsList';
-import { ContactsContainer } from './Container/Container';
-import { GlobalStyles } from './GlbalStyles/GlobalStyles';
-import { SearchField } from './phonebookFields/SearchField';
+import { GlobalStyles, Container } from './GlobalStyles/GlobalStyles';
+import { SearchField } from './SearchField/SearchField';
 
 export class App extends Component {
   state = {
@@ -13,9 +12,11 @@ export class App extends Component {
 
   handleSubmit = value => {
     if (this.state.contacts.find(el => el.name === value.name)) {
-      return alert(`${value.name} is already in contacts.`);
+      alert(`${value.name} is already in contacts.`);
+      return false;
     }
     this.setState(prevState => ({ contacts: [...prevState.contacts, value] }));
+    return true;
   };
 
   handelChange = () => {
@@ -25,7 +26,7 @@ export class App extends Component {
   };
 
   handleDelete = value => {
-    this.setState(prevState => ({ contacts: prevState.contacts.filter(el => el.name !== value) }));
+    this.setState(prevState => ({ contacts: prevState.contacts.filter(el => el.id !== value) }));
   };
 
   onChange = evt => {
@@ -34,14 +35,14 @@ export class App extends Component {
 
   render() {
     return (
-      <ContactsContainer>
+      <Container>
         <GlobalStyles />
         <h1>Phonebook</h1>
         <ContactsField add={this.handleSubmit} />
         <h2>Contacts</h2>
         <SearchField filter={this.state.filter} onChange={this.onChange} />
         <ContactsList list={this.handelChange()} onDelete={this.handleDelete} />
-      </ContactsContainer>
+      </Container>
     );
   }
 }

@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import { ContainerForm, FormLabel, AddBtn, ContactsInput } from './ContactsField.styled';
+import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
 export function ContactsField({ add }) {
@@ -7,8 +8,10 @@ export function ContactsField({ add }) {
     <Formik
       initialValues={{ name: '', number: '' }}
       onSubmit={(values, { resetForm }) => {
-        resetForm();
-        add(values);
+        values.id = nanoid();
+        if (add(values)) {
+          resetForm();
+        }
       }}
     >
       {({ isSubmiting }) => (

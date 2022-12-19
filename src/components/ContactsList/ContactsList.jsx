@@ -1,13 +1,20 @@
 import { ContactsListItem } from './ContactsListItem';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
 export function ContactsList({ list, onDelete }) {
   return (
     <ul>
-      {list.map(el => (
-        <ContactsListItem key={nanoid()} name={el.name} number={el.number} onDelete={onDelete} />
-      ))}
+      {list.map(el => {
+        return (
+          <ContactsListItem
+            key={el.id}
+            name={el.name}
+            number={el.number}
+            onDelete={onDelete}
+            id={el.id}
+          />
+        );
+      })}
     </ul>
   );
 }
