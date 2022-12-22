@@ -1,59 +1,60 @@
-import { Component } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ContactsField } from './ContactsField/ContactsField';
 import { ContactsList } from './ContactsList/ContactsList';
 import { GlobalStyles, Container } from './GlobalStyles/GlobalStyles';
 import { SearchField } from './SearchField/SearchField';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export function App() {
+  const [contacts, setContacts] = useState([]);
+  const [filterField, setFilterField] = useState('');
 
-  componentDidMount() {
+  const componentDidMount = useRef(false);
+
+  useEffect(() => {
     const local = JSON.parse(localStorage.getItem('contacts'));
     if (local) {
-      this.setState({ contacts: local });
+      setContacts(local);
     }
-  }
+  }, []);
 
-  componentDidUpdate() {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  }
+  useEffect(() => {
+    if (componentDidMount.current) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
 
-  handleSubmit = value => {
-    if (this.state.contacts.find(el => el.name === value.name)) {
+      return;
+    }
+    componentDidMount.current = true;
+  }, [contacts]);
+
+  const handleSubmit = value => {
+    if (contacts.find(el => el.name === value.name)) {
       alert(`${value.name} is already in contacts.`);
       return false;
     }
-    this.setState(prevState => ({ contacts: [...prevState.contacts, value] }));
+    setContacts(prevState => [...prevState, value]);
     return true;
   };
 
-  handelChange = () => {
-    return this.state.contacts.filter(el =>
-      el.name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
+  const handelChange = () => {
+    return contacts.filter(el => el.name.toLowerCase().includes(filterField.toLowerCase()));
   };
 
-  handleDelete = value => {
-    this.setState(prevState => ({ contacts: prevState.contacts.filter(el => el.id !== value) }));
+  const handleDelete = value => {
+    setContacts(prevState => prevState.filter(el => el.id !== value));
   };
 
-  onChange = evt => {
-    this.setState({ filter: evt.target.value });
+  const onChange = evt => {
+    setFilterField(evt.target.value);
   };
 
-  render() {
-    return (
-      <Container>
-        <GlobalStyles />
-        <h1>Phonebook</h1>
-        <ContactsField add={this.handleSubmit} />
-        <h2>Contacts</h2>
-        <SearchField filter={this.state.filter} onChange={this.onChange} />
-        <ContactsList list={this.handelChange()} onDelete={this.handleDelete} />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <GlobalStyles />
+      <h1>Phonebook</h1>
+      <ContactsField add={handleSubmit} />
+      <h2>Contacts</h2>
+      <SearchField filter={filterField} onChange={onChange} />
+      <ContactsList list={handelChange()} onDelete={handleDelete} />
+    </Container>
+  );
 }
