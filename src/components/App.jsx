@@ -10,6 +10,17 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const local = JSON.parse(localStorage.getItem('contacts'));
+    if (local) {
+      this.setState({ contacts: local });
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
   handleSubmit = value => {
     if (this.state.contacts.find(el => el.name === value.name)) {
       alert(`${value.name} is already in contacts.`);
