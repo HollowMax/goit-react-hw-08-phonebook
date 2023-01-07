@@ -1,22 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
-import { nanoid } from 'nanoid';
 import { ContainerForm, FormLabel, AddBtn, ContactsInput } from './ContactsField.styled';
-import { addContacts } from 'redux/contacts';
+import { addContact } from 'redux/operations';
 
 export function ContactsField() {
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       onSubmit={(values, { resetForm }) => {
-        values.id = nanoid();
         if (contacts.find(el => el.name === values.name)) {
           alert(`${values.name} is already in contacts.`);
           return;
         }
-        dispatch(addContacts(values));
+        dispatch(addContact(values));
         resetForm();
       }}
     >
@@ -31,12 +29,12 @@ export function ContactsField() {
             required
           />
 
-          <FormLabel htmlFor="number" style={{ marginTop: '20px' }}>
+          <FormLabel htmlFor="phone" style={{ marginTop: '20px' }}>
             Number
           </FormLabel>
           <ContactsInput
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required

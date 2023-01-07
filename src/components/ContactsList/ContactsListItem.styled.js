@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const Error = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+`;
+
 export const ListItem = styled.li`
   display: flex;
   align-items: center;
@@ -24,4 +30,9 @@ export const DeleteBtn = styled.button`
   &:active {
     background-color: #d6ffff;
   }
+`;
+
+export const Container = styled.div`
+  margin-top: 20px;
+  margin-left: 70px;
 `;

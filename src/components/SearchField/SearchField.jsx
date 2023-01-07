@@ -1,10 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { SearchForm, SearchLabel, SearchInput } from './SearchField.styled';
 import { setFilter } from 'redux/filter';
+import { fetchContacts } from 'redux/operations';
+import { useEffect } from 'react';
 
 export function SearchField() {
   const filter = useSelector(state => state.filter);
   const dispathc = useDispatch();
+  useEffect(() => {
+    dispathc(fetchContacts());
+  });
 
   return (
     <SearchForm>
