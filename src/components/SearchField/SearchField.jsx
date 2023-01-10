@@ -8,9 +8,12 @@ export function SearchField() {
   const filter = useSelector(state => state.filter);
   const token = useSelector(state => state.user.token);
   const dispathc = useDispatch();
-  useEffect(() => {
-    dispathc(fetchContacts(token));
-  }, []);
+  useEffect(
+    () => {
+      dispathc(fetchContacts(token));
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <SearchForm>
