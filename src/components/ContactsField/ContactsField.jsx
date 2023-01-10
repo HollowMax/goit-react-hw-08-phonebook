@@ -5,16 +5,17 @@ import { addContact } from 'redux/operations';
 
 export function ContactsField() {
   const contacts = useSelector(state => state.contacts.items);
+  const token = useSelector(state => state.user.token);
   const dispatch = useDispatch();
   return (
     <Formik
-      initialValues={{ name: '', phone: '' }}
+      initialValues={{ name: '', number: '' }}
       onSubmit={(values, { resetForm }) => {
         if (contacts.find(el => el.name === values.name)) {
           alert(`${values.name} is already in contacts.`);
           return;
         }
-        dispatch(addContact(values));
+        dispatch(addContact({ token, values }));
         resetForm();
       }}
     >
@@ -22,6 +23,7 @@ export function ContactsField() {
         <ContainerForm>
           <FormLabel htmlFor="name">Name</FormLabel>
           <ContactsInput
+            id="name"
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -33,8 +35,9 @@ export function ContactsField() {
             Number
           </FormLabel>
           <ContactsInput
+            id="number"
             type="tel"
-            name="phone"
+            name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required

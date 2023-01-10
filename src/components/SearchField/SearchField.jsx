@@ -6,10 +6,11 @@ import { useEffect } from 'react';
 
 export function SearchField() {
   const filter = useSelector(state => state.filter);
+  const token = useSelector(state => state.user.token);
   const dispathc = useDispatch();
   useEffect(() => {
-    dispathc(fetchContacts());
-  });
+    dispathc(fetchContacts(token));
+  }, []);
 
   return (
     <SearchForm>

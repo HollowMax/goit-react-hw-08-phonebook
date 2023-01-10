@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const Error = styled.p`
-  font-size: 20px;
-  font-weight: bold;
-  color: red;
-`;
-
 export const ListItem = styled.li`
   display: flex;
   align-items: center;

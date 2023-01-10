@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { ContactsListItem } from './ContactsListItem';
 import { Circles } from 'react-loader-spinner';
-import { Error, Container } from './ContactsListItem.styled';
+import { Container } from './ContactsListItem.styled';
 
 export function ContactsList() {
   const contacts = useSelector(state => state.contacts);
@@ -11,11 +11,9 @@ export function ContactsList() {
 
   return (
     <>
-      {contacts.error && <Error>Oops! Something going wrong!</Error>}
-
       <ul>
         {handelChange().map(el => (
-          <ContactsListItem key={el.id} name={el.name} number={el.phone} id={el.id} />
+          <ContactsListItem key={el.id} name={el.name} number={el.number} id={el.id} />
         ))}
       </ul>
       {contacts.isLoading && (

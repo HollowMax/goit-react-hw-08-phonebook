@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ItemText, ListItem, DeleteBtn } from './ContactsListItem.styled';
 import { deleteContact } from 'redux/operations';
 
 export function ContactsListItem({ name, number, id }) {
   const dispatch = useDispatch();
+  const token = useSelector(state => state.user.token);
 
   return (
     <ListItem>
@@ -13,9 +14,10 @@ export function ContactsListItem({ name, number, id }) {
       </ItemText>
       <DeleteBtn
         type="button"
-        onClick={el => {
+        onClick={async el => {
           el.target.disabled = true;
-          dispatch(deleteContact(id));
+          await dispatch(deleteContact({ token, id }));
+          el.target.disabled = false;
         }}
       >
         Delete
